@@ -7,6 +7,8 @@
   
   <!-- fullPage.js v3 CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-box-and-violin-plot/build/Chart.BoxPlot.js"></script>
 
   <!-- 커스텀 CSS -->
   <style>
@@ -45,47 +47,54 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-<div id="rainbow-table-explain" style="display: none;">
-  <p>해시함수는 복호화 할 수 없기 때문에, 레인보우 테이블에 미리 계산된 해시 값들을 저장하여 공격자가 빠르게 비밀번호를 찾을 수 있도록 돕는다.</p>
-</div>
-<div id="fullpage">
-  <!-- 1번 섹션: 소개 -->
-  <div class="section" id="section1">
-    <h1>암호화 알고리즘에서의 솔팅(salting)과 Work Factor</h1>
+
+  <div id="rainbow-table-explain" style="display: none;">
+    <p>해시함수는 복호화 할 수 없기 때문에, 레인보우 테이블에 미리 계산된 해시 값들을 저장하여 공격자가 빠르게 비밀번호를 찾을 수 있도록 돕는다.</p>
   </div>
 
-  <!-- 2번 섹션: 솔팅(Salting) -->
-  <div class="section" id="section2">
-    <h2>솔팅 (Salting)</h2>
-    <p>솔팅은 비밀번호 해시에서 동일한 비밀번호라도 다른 해시 값을 만들도록 <strong>무작위 데이터를 추가</strong>하는 방법입니다.</p>
-    <p>예시:</p>
-    <div class="code">
-      Password: "123456"<br>
-      Salt: "a1b2c3"<br>
-      Hash("123456" + "a1b2c3") = "f5d1278e8109edd94e1e4197e04873b9"
+  <div id="fullpage">
+    <!-- 1번 섹션: 소개 -->
+    <div class="section" id="section1">
+      <h1>암호화 알고리즘에서의 솔팅(salting)과 Work Factor</h1>
     </div>
-    <p>이렇게 하면 동일한 비밀번호라도 해시 값이 달라져 <strong>무차별 공격과 <span id="rainbow-table">레인보우 테이블</span>공격</strong>을 방지할 수 있습니다.</p>
-  </div>
-  <!-- 3번 섹션: Work Factor -->
-  <div class="section" id="section3">
-    <h2>Work Factor</h2>
-    <p>Work Factor는 해시 계산 비용을 조정하는 파라미터입니다. 반복 횟수를 늘리면 계산이 느려져 공격자가 공격하기 어려워집니다.</p>
-    <p>예시 (bcrypt):</p>
-    <div class="code">
-      bcrypt("password123", saltRounds=12)
-    </div>
-    <p>수식으로 표현하면 반복 횟수 \( n \)에 따라 해시 계산 시간 \( T \)는 대략</p>
-    <p>$$ T \propto 2^n $$</p>
-    <p>즉, 반복 횟수가 증가하면 해시 계산이 지수적으로 느려집니다.</p>
-  </div>
 
-  <!-- 4번 섹션: 결론 -->
-  <div class="section" id="section4">
-    <h2>결론</h2>
-    <p>솔팅과 Work Factor를 적용하면 비밀번호 해시는 안전하게 보호됩니다.</p>
-    <p>동일한 비밀번호라도 서로 다른 해시가 생성되고, 공격자가 공격을 시도하기 어려워집니다.</p>
+    <!-- 2번 섹션: 솔팅(Salting) -->
+    <div class="section" id="section2">
+      <h2>솔팅 (Salting)</h2>
+      <p>솔팅은 비밀번호 해시에서 동일한 비밀번호라도 다른 해시 값을 만들도록 <strong>무작위 데이터를 추가</strong>하는 방법입니다.</p>
+      <p>예시:</p>
+      <div class="code">
+        Password: "123456"<br>
+        Salt: "a1b2c3"<br>
+        Hash("123456" + "a1b2c3") = "f5d1278e8109edd94e1e4197e04873b9"
+      </div>
+      <p>이렇게 하면 동일한 비밀번호라도 해시 값이 달라져 <strong>무차별 공격과 <span id="rainbow-table">레인보우 테이블</span>공격</strong>을 방지할 수 있습니다.</p>
+    </div>
+    <!-- 3번 섹션: Work Factor -->
+    <div class="section" id="section3">
+      <h2>Work Factor</h2>
+      <p>Work Factor는 해시 계산 비용을 조정하는 파라미터입니다. 반복 횟수를 늘리면 계산이 느려져 공격자가 공격하기 어려워집니다.</p>
+      <p>예시 (bcrypt):</p>
+      <div class="code">
+        bcrypt("password123", saltRounds=12)
+      </div>
+      <p>수식으로 표현하면 반복 횟수 \( n \)에 따라 해시 계산 시간 \( T \)는 대략</p>
+      <p>$$ T \propto 2^n $$</p>
+      <p>즉, 반복 횟수가 증가하면 해시 계산이 지수적으로 느려집니다.</p>
+    </div>
+    <!--시각화-->
+    <div class="section" id="section-figure">
+      <h2>Work Factor 시각화</h2>
+      <canvas id="hashChart" width="600" height="400"></canvas>
+      <button id="toggleButton">off</button>
+    </div>
+    <!-- 4번 섹션: 결론 -->
+    <div class="section" id="section4">
+      <h2>결론</h2>
+      <p>솔팅과 Work Factor를 적용하면 비밀번호 해시는 안전하게 보호됩니다.</p>
+      <p>동일한 비밀번호라도 서로 다른 해시가 생성되고, 공격자가 공격을 시도하기 어려워집니다.</p>
+    </div>
   </div>
-</div>
 
 <!-- fullPage.js v3 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
