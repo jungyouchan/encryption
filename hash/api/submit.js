@@ -15,7 +15,7 @@ export default function handler(req, res) {
   if (req.method === 'POST') {
     // 클라이언트에서 보낸 데이터를 받기
     const data = req.body;
-    hashData.push(data.passwordHashes); //hashData = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ]
+    hashData.push(data.receivedData.passwordHashes); //hashData = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ]
 
     console.log("서버가 받은 데이터:", data);
 
