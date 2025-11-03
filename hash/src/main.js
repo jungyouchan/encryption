@@ -1,4 +1,19 @@
-let hashData = []; // 서버에서 받아온 데이터를 저장할 배열  
+// main.js
+import { Chart, CategoryScale, LinearScale } from 'chart.js';
+import { BoxPlotController, BoxAndWhiskersElement } from 'chartjs-chart-box-and-violin-plot';
+
+// Chart.js 기본 스케일 등록
+Chart.register(CategoryScale, LinearScale, BoxPlotController, BoxAndWhiskersElement);
+
+Chart.register(
+  Chart.BoxPlotController,
+  Chart.BoxAndWhiskersElement,
+  Chart.CategoryScale,
+  Chart.LinearScale
+);
+
+
+let hashData = []; // 서버에서 받아온 데이터를 저장할 배열
 let hashChart;
 
 export async function fetchData() {

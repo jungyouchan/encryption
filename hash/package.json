@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "argon2-browser": "^1.18.0",
+    "chart.js": "^4.5.1",
+    "chartjs-chart-box-and-violin-plot": "^4.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0"
   }
