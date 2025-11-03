@@ -1,9 +1,8 @@
-// main.js
 import { Chart, CategoryScale, LinearScale } from 'chart.js';
-import { BoxPlotController, BoxAndWhiskersElement } from 'chartjs-chart-box-and-violin-plot';
+import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot';
 
-// Chart.js 기본 스케일 등록
-Chart.register(CategoryScale, LinearScale, BoxPlotController, BoxAndWhiskersElement);
+// Chart.js + BoxPlot plugin 등록
+Chart.register(CategoryScale, LinearScale, BoxPlotController, BoxAndWiskers);
 
 Chart.register(
   Chart.BoxPlotController,

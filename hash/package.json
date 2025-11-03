@@ -12,6 +12,7 @@
     "vite": "^7.1.7"
   },
   "dependencies": {
+    "@sgratzl/chartjs-chart-boxplot": "^4.4.5",
     "argon2-browser": "^1.18.0",
     "chart.js": "^4.5.1",
     "chartjs-chart-box-and-violin-plot": "^4.0.0",

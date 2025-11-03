@@ -10,5 +10,8 @@ export default defineConfig({
   },
   server: {
     port: 5173,     // 개발 서버 포트
+  },
+  optimizeDeps: {
+    include: ['chart.js', '@sgratzl/chartjs-chart-boxplot']
   }
 });
