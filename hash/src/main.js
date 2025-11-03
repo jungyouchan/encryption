@@ -23,7 +23,7 @@ export async function fetchData() {
 }
 
 
-function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ]
+function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ] time
   const sha256Times = data.map(d => d.SHA256);
   const argon2Times = data.map(d => d.Argon2);
   const bcryptTimes = data.map(d => d.Bcrypt);
