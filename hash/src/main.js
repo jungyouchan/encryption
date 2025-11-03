@@ -1,5 +1,5 @@
 let hashData = []; // 서버에서 받아온 데이터를 저장할 배열  
-let hashChart
+let hashChart;
 
 export async function fetchData() {
   try {
@@ -44,6 +44,7 @@ function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...
 
   if (hashChart) {
     hashChart.destroy(); // 기존 차트가 있으면 제거
+    hashChart = null;
   }
 
   const ctx = document.getElementById('hashChart').getContext('2d');
