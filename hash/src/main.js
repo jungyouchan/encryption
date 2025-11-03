@@ -2,7 +2,7 @@ let pollingInterval;
 let isPolling = false;
 let hashData = []; // 서버에서 받아온 데이터를 저장할 배열
 
-document.onload = function () {
+document.onload = () => {
 
   {
     document.getElementById("toggleButton").addEventListener("click", () => {
