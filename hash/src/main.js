@@ -1,4 +1,5 @@
 let hashData = []; // 서버에서 받아온 데이터를 저장할 배열  
+let hashChart
 
 export async function fetchData() {
   try {
@@ -21,6 +22,7 @@ export async function fetchData() {
   }
 }
 
+
 function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ]
   const sha256Times = data.map(d => d.SHA256);
   const argon2Times = data.map(d => d.Argon2);
@@ -40,8 +42,12 @@ function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...
     }]
   };
 
+  if (hashChart) {
+    hashChart.destroy(); // 기존 차트가 있으면 제거
+  }
+
   const ctx = document.getElementById('hashChart').getContext('2d');
-  new Chart(ctx, {
+  hashChart = new Chart(ctx, {
     type: 'boxplot',
     data: chartData,
     options: {
