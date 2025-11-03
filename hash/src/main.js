@@ -2,15 +2,19 @@ let pollingInterval;
 let isPolling = false;
 let hashData = []; // 서버에서 받아온 데이터를 저장할 배열
 
-document.onload = () => {
+window.onload = () => {
 
   {
-    document.getElementById("toggleButton").addEventListener("click", () => {
-      if (isPolling) {
-        stopPolling();  // 이미 폴링 중이면 멈추기
-      } else {
-        startPolling();  // 폴링 시작
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleButton = document.getElementById("toggleButton");
+      
+      toggleButton.addEventListener("click", () => {
+        if (isPolling) {
+          stopPolling();
+        } else {
+          startPolling();
+        }
+      });
     });
   }
 
