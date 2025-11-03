@@ -130,7 +130,7 @@
     toggleCheckbox.addEventListener("change", () => {
       const isPolling = toggleCheckbox.checked;
       if (isPolling) {
-        pollingInterval = setInterval(fetchData, 5000);
+        pollingInterval = setInterval(fetchData, 1000);
       } else {
         clearInterval(pollingInterval);
       }
