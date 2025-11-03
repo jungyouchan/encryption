@@ -87,7 +87,12 @@
     <div class="section" id="section-figure">
       <h2>Work Factor 시각화</h2>
       <canvas id="hashChart" width="600" height="400"></canvas>
-      <button id="toggleButton">off</button>
+      
+       <label class="switch">
+        <input type="checkbox" id="toggleCheckbox">
+        <span class="slider"></span>
+      </label>
+      <span>Polling</span>
     </div>
     <!-- 4번 섹션: 결론 -->
     <div class="section" id="section4">
@@ -120,13 +125,14 @@
   function initHandlers(){
     const toggleButton = document.getElementById("toggleButton");
     
-    toggleButton.addEventListener("click", () => {
-      isPolling = !isPolling;
-      toggleButton.textContent = isPolling ? "ON" : "OFF";
+    const toggleCheckbox = document.getElementById("toggleCheckbox");
+
+    toggleCheckbox.addEventListener("change", () => {
+      const isPolling = toggleCheckbox.checked;
       if (isPolling) {
-        clearInterval(pollingInterval);  // setInterval을 취소
+        pollingInterval = setInterval(fetchData, 5000);
       } else {
-        pollingInterval = setInterval(fetchData, 5000); // 5000ms = 5초마다 fetchData 호출;
+        clearInterval(pollingInterval);
       }
     });
 
