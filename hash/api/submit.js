@@ -26,11 +26,7 @@ export default function handler(req, res) {
     });
 
     return;
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' }); // 허용되지 않은 HTTP 메서드에 대한 응답
-  }
-  
-  if (req.method === 'GET') {
+  } else if (req.method === 'GET') {
     const data = {
       message: "서버에서 받은 데이터입니다.",
       receivedData: {
