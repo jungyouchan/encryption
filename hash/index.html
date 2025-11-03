@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>암호화 알고리즘: 솔팅과 Work Factor</title>
-  
+  <link rel="stylesheet" href="./src/style.css" />
+
   <!-- fullPage.js v3 CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -98,16 +99,55 @@
 
 <!-- fullPage.js v3 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
-<script>
+<script type="module">
   document.addEventListener('DOMContentLoaded', function() {
     new fullpage('#fullpage', {
       licenseKey: 'GPLv3', // 무료 학습/테스트용 키
       autoScrolling: true,
       navigation: true,
       navigationPosition: 'right',
-      scrollingSpeed: 700
+      scrollingSpeed: 700,
+      afterRender: () => {
+        initHandlers();
+      }
     });
   });
+
+  import { fetchData } from './src/main.js';
+
+  let pollingInterval;
+  let isPolling = false;
+  function initHandlers(){
+    const toggleButton = document.getElementById("toggleButton");
+    
+    toggleButton.addEventListener("click", () => {
+      isPolling = !isPolling;
+      toggleButton.textContent = isPolling ? "ON" : "OFF";
+      if (isPolling) {
+        clearInterval(pollingInterval);  // setInterval을 취소
+      } else {
+        pollingInterval = setInterval(fetchData, 5000); // 5000ms = 5초마다 fetchData 호출;
+      }
+    });
+
+    const rainbowTable = document.getElementById("rainbow-table");
+    const explain = document.getElementById("rainbow-table-explain");
+    
+    rainbowTable.addEventListener("mouseover", (e) => {
+      explain.style.display = "block";
+      explain.style.left = `${e.clientX + 10}px`;
+      explain.style.top = `${e.clientY + 10}px`;
+    });
+
+    rainbowTable.addEventListener("mousemove", (e) => {
+      explain.style.left = `${e.clientX + 10}px`;
+      explain.style.top = `${e.clientY + 10}px`;
+    });
+
+    rainbowTable.addEventListener("mouseout", () => {
+      explain.style.display = "none";
+    });
+  }
 </script>
 
 </body>

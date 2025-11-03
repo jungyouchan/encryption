@@ -1,33 +1,6 @@
-let pollingInterval;
-let isPolling = false;
-let hashData = []; // 서버에서 받아온 데이터를 저장할 배열
+let hashData = []; // 서버에서 받아온 데이터를 저장할 배열  
 
-window.onload = () => {
-
-  {
-    document.addEventListener("DOMContentLoaded", () => {
-      const toggleButton = document.getElementById("toggleButton");
-      
-      toggleButton.addEventListener("click", () => {
-        if (isPolling) {
-          stopPolling();
-        } else {
-          startPolling();
-        }
-      });
-    });
-  }
-
-  {
-    const rainbowTable = document.getElementById("rainbow-table");
-    const rainbowTableExplain = document.getElementById("rainbow-table-explain");
-    rainbowTable.addEventListener("mouseover", (e) => {
-      rainbowTableExplain.style.display = "block";
-      rainbowTableExplain.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    });
-  }
-}
-async function fetchData() {
+export async function fetchData() {
   try {
     const response = await fetch("https://encryption-pink.vercel.app/api/submit", {
       method: "GET",  // GET 요청으로 데이터 받기
@@ -47,21 +20,6 @@ async function fetchData() {
     console.error("오류 발생:", error);
   }
 }
-
-function startPolling() {
-  // 5초마다 fetchData를 호출하여 데이터를 주기적으로 받아오기
-  pollingInterval = setInterval(fetchData, 5000); // 5000ms = 5초마다 fetchData 호출
-  isPolling = true;
-  document.getElementById("toggleButton").textContent = "ON";
-}
-
-// 폴링 중지
-function stopPolling() {
-  clearInterval(pollingInterval);  // setInterval을 취소
-  isPolling = false;
-  document.getElementById("toggleButton").textContent = "OFF";
-}
-
 
 function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ]
   const sha256Times = data.map(d => d.SHA256);
