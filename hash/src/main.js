@@ -1,43 +1,31 @@
-import { Chart, CategoryScale, LinearScale } from 'chart.js';
-import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot';
+import { Chart, CategoryScale, LinearScale, Tooltip, Title, Legend } from 'chart.js';
+import { BoxPlotChart, BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot';
 
-// Chart.js + BoxPlot plugin 등록
-Chart.register(CategoryScale, LinearScale, BoxPlotController, BoxAndWiskers);
+// Chart.js 기본 요소 등록
+Chart.register(CategoryScale, LinearScale, Tooltip, Title, Legend);
 
-Chart.register(
-  Chart.BoxPlotController,
-  Chart.BoxAndWhiskersElement,
-  Chart.CategoryScale,
-  Chart.LinearScale
-);
+// BoxPlot 관련 요소 등록
+Chart.register(BoxPlotController, BoxAndWiskers, BoxPlotChart);
 
-
-let hashData = []; // 서버에서 받아온 데이터를 저장할 배열
+let hashData = [];
 let hashChart;
 
 export async function fetchData() {
   try {
-    const response = await fetch("https://encryption-pink.vercel.app/api/submit", {
-      method: "GET",  // GET 요청으로 데이터 받기
-    });
+    const response = await fetch("https://encryption-pink.vercel.app/api/submit");
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    if (response.ok) {
-      const data = await response.json();  // 응답을 JSON 형식으로 파싱
-      hashData.push(...data.receivedData.passwordHashes); // 서버에서 받은 데이터 업데이트
-      console.log("서버 응답:", data);
+    const data = await response.json();
+    hashData.push(...data.receivedData.passwordHashes);
+    console.log("서버 응답:", data);
 
-      drawChart(hashData); // 차트 그리기 함수 호출
-
-    } else {
-      console.error("서버 응답 오류", response.status);
-    }
+    drawChart(hashData);
   } catch (error) {
-    console.error("오류 발생:", error);
+    console.error("데이터 로드 오류:", error);
   }
 }
 
-
-function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...}, ... ] time
+function drawChart(data) {
   const sha256Times = data.map(d => d.SHA256);
   const argon2Times = data.map(d => d.Argon2);
   const bcryptTimes = data.map(d => d.Bcrypt);
@@ -45,32 +33,32 @@ function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...
   const chartData = {
     labels: ["SHA256", "Argon2", "Bcrypt"],
     datasets: [{
-      label: 'Hash Time Distribution',
-      backgroundColor: ['skyblue','lightgreen','lightpink'],
+      label: "Hash Time Distribution",
+      backgroundColor: ['skyblue', 'lightgreen', 'lightpink'],
       borderColor: 'black',
       borderWidth: 1,
-      outlierColor: '#999999', // 점 색
+      outlierColor: '#999999',
       padding: 10,
       itemRadius: 4,
-      data: [sha256Times, argon2Times, bcryptTimes]  // 각각 박스플롯용 배열
+      data: [sha256Times, argon2Times, bcryptTimes]
     }]
   };
 
   if (hashChart) {
-    hashChart.destroy(); // 기존 차트가 있으면 제거
+    hashChart.destroy();
     hashChart = null;
   }
 
-  const ctx = document.getElementById('hashChart').getContext('2d');
+  const ctx = document.getElementById("hashChart").getContext("2d");
   hashChart = new Chart(ctx, {
-    type: 'boxplot',
+    type: "boxplot",
     data: chartData,
     options: {
       responsive: true,
       plugins: {
         title: {
           display: true,
-          text: '알고리즘별 해시 시간 분포'
+          text: "알고리즘별 해시 시간 분포"
         },
         legend: {
           display: false
@@ -78,7 +66,7 @@ function drawChart(data) { //data = [ {SHA256:..., Argon2:..., Bcrypt:...}, {...
       },
       scales: {
         y: {
-          title: { display: true, text: '해시 생성 시간 (ms)' }
+          title: { display: true, text: "해시 생성 시간 (ms)" }
         }
       }
     }
