@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://hash-survey-67fj4u6t6-yuchans-projects-8b9ada38.vercel.app/"
+          "value": "https://hash-survey-67fj4u6t6-yuchans-projects-8b9ada38.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
